@@ -1,0 +1,43 @@
+/* Estilos propios (complementan a Bootstrap) */
+.fondo-login {
+  background: linear-gradient(135deg, #0d6efd 0%, #052c65 100%);
+}
+
+.tarjeta-login {
+  width: 100%;
+  max-width: 420px;
+  border: none;
+  border-radius: 1rem;
+}
+
+.valor-positivo { color: #198754; font-weight: 600; }
+.valor-negativo { color: #dc3545; font-weight: 600; }
+
+.saldo-grande { font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; color: #0d6efd; }
+.tarjeta-dato { border: none; border-radius: .75rem; box-shadow: 0 .125rem .5rem rgba(0, 0, 0, .08); }
+.numero-dashboard { font-size: 2rem; font-weight: 700; }
+
+.nav-tabs .nav-link { color: #495057; }
+.nav-tabs .nav-link.active { font-weight: 600; }
+
+/* Tablas con scroll horizontal en pantallas pequeñas */
+.tabla-scroll { overflow-x: auto; }
+
+/* ---------- Cajero automático ---------- */
+.fondo-cajero { background: linear-gradient(160deg, #1b2735 0%, #090a0f 100%); min-height: 100vh; }
+.cajero-carcasa {
+  width: 100%; max-width: 640px; background: #2b3a4a; border-radius: 1.25rem;
+  padding: 1.25rem; box-shadow: 0 1rem 3rem rgba(0, 0, 0, .6);
+}
+.cajero-pantalla {
+  background: #0b2a3d; color: #d6f5ff; border-radius: .75rem; border: 4px solid #121c26;
+  min-height: 360px; padding: 1.5rem;
+}
+.cajero-pantalla h2 { color: #7fe3ff; }
+.cajero-pantalla .form-control { background: #07202f; color: #fff; border-color: #2c6a8a; text-align: center; font-size: 1.25rem; }
+.cajero-pantalla .form-control:focus { background: #07202f; color: #fff; }
+.cajero-pantalla .table { --bs-table-bg: transparent; --bs-table-color: #d6f5ff; --bs-table-border-color: #1d4a63; }
+.cajero-saldo { font-size: clamp(2rem, 8vw, 3rem); font-weight: 700; color: #7dff9b; }
+.cajero-pantalla .valor-positivo { color: #7dff9b; }
+.cajero-pantalla .valor-negativo { color: #ff8a8a; }
+.btn-cajero { padding: 1rem; font-size: 1.1rem; }
