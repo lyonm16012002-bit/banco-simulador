@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel Administrativo | Banco Simulador</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/estilos.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+      <span class="navbar-brand fw-bold">Panel Administrativo</span>
+      <div class="d-flex align-items-center gap-3 text-white">
+        <span id="nombreUsuario" class="d-none d-sm-inline"></span>
+        <button class="btn btn-outline-light btn-sm" id="btnSalir">Cerrar sesión</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div id="alertaGlobal" class="alert d-none" role="alert"></div>
+
+    <ul class="nav nav-tabs mb-4 flex-nowrap tabla-scroll" role="tablist">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDashboard" type="button">Dashboard</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabClientes" type="button">Clientes</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabCuentas" type="button">Cuentas</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabConsignar" type="button">Consignación</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabMovimientos" type="button">Movimientos</button></li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- DASHBOARD -->
+      <div class="tab-pane fade show active" id="tabDashboard">
+        <div class="row g-3">
+          <div class="col-6 col-lg-3"><div class="card tarjeta-dato"><div class="card-body"><div class="text-muted">Clientes totales</div><div class="numero-dashboard" id="dbTotal">—</div></div></div></div>
+          <div class="col-6 col-lg-3"><div class="card tarjeta-dato"><div class="card-body"><div class="text-muted">Clientes activos</div><div class="numero-dashboard text-success" id="dbActivos">—</div></div></div></div>
+          <div class="col-6 col-lg-3"><div class="card tarjeta-dato"><div class="card-body"><div class="text-muted">Clientes bloqueados</div><div class="numero-dashboard text-danger" id="dbBloqueados">—</div></div></div></div>
+          <div class="col-6 col-lg-3"><div class="card tarjeta-dato"><div class="card-body"><div class="text-muted">Cuentas activas</div><div class="numero-dashboard" id="dbCuentas">—</div></div></div></div>
+          <div class="col-12"><div class="card tarjeta-dato"><div class="card-body"><div class="text-muted">Suma total de saldos en el banco</div><div class="saldo-grande" id="dbSaldo">—</div></div></div></div>
+        </div>
+        <button class="btn btn-outline-secondary btn-sm mt-3" id="btnActualizarDash">Actualizar</button>
+      </div>
+
+      <!-- CLIENTES -->
+      <div class="tab-pane fade" id="tabClientes">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <input type="search" id="qClientes" class="form-control" style="max-width: 360px" placeholder="Buscar por nombre, documento, correo o cuenta">
+          <button class="btn btn-secondary" id="btnBuscarClientes">Buscar</button>
+          <button class="btn btn-primary ms-auto" id="btnNuevoCliente">+ Nuevo cliente</button>
+        </div>
+        <div class="card tarjeta-dato"><div class="card-body"><div class="tabla-scroll">
+          <table class="table table-hover align-middle mb-0">
+            <thead><tr><th>Documento</th><th>Nombre</th><th>Correo</th><th>Estado</th><th class="text-end">Saldo total</th><th></th></tr></thead>
+            <tbody id="tbClientes"></tbody>
+          </table>
+        </div></div></div>
+      </div>
+
+      <!-- CUENTAS -->
+      <div class="tab-pane fade" id="tabCuentas">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <input type="search" id="qCuentas" class="form-control" style="max-width: 360px" placeholder="Buscar por cuenta, documento o titular">
+          <button class="btn btn-secondary" id="btnBuscarCuentas">Buscar</button>
+        </div>
+        <div class="card tarjeta-dato"><div class="card-body"><div class="tabla-scroll">
+          <table class="table table-hover align-middle mb-0">
+            <thead><tr><th>Cuenta</th><th>Tipo</th><th>Titular</th><th>Documento</th><th>Estado</th><th class="text-end">Saldo</th></tr></thead>
+            <tbody id="tbCuentas"></tbody>
+          </table>
+        </div></div></div>
+      </div>
+
+      <!-- CONSIGNACIÓN -->
+      <div class="tab-pane fade" id="tabConsignar">
+        <div class="card tarjeta-dato" style="max-width: 520px"><div class="card-body">
+          <h2 class="h5 mb-3">Realizar consignación</h2>
+          <div id="alertaConsignar" class="alert d-none" role="alert"></div>
+          <form id="formConsignar" novalidate>
+            <div class="mb-3">
+              <label for="coNumero" class="form-label">Número de cuenta</label>
+              <input type="text" inputmode="numeric" class="form-control" id="coNumero" list="listaCuentas" maxlength="20" required>
+              <datalist id="listaCuentas"></datalist>
+            </div>
+            <div class="mb-3">
+              <label for="coValor" class="form-label">Valor a consignar (COP)</label>
+              <input type="number" class="form-control" id="coValor" min="1" step="0.01" required>
+            </div>
+            <div class="mb-3">
+              <label for="coDescripcion" class="form-label">Descripción (opcional)</label>
+              <input type="text" class="form-control" id="coDescripcion" maxlength="80">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Consignar</button>
+          </form>
+        </div></div>
+      </div>
+
+      <!-- MOVIMIENTOS -->
+      <div class="tab-pane fade" id="tabMovimientos">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <input type="search" id="qMov" class="form-control" style="max-width: 320px" placeholder="Buscar por cuenta, titular o descripción">
+          <select id="selTipoMov" class="form-select" style="max-width: 220px">
+            <option value="">Todos los tipos</option>
+            <option value="CONSIGNACION">Consignación</option>
+            <option value="RETIRO_CAJERO">Retiro cajero</option>
+            <option value="TRANSFERENCIA_ENVIADA">Transferencia enviada</option>
+            <option value="TRANSFERENCIA_RECIBIDA">Transferencia recibida</option>
+          </select>
+          <button class="btn btn-secondary" id="btnBuscarMov">Filtrar</button>
+        </div>
+        <div class="card tarjeta-dato"><div class="card-body"><div class="tabla-scroll">
+          <table class="table table-hover align-middle mb-0">
+            <thead><tr><th>Fecha</th><th>Cuenta</th><th>Titular</th><th>Tipo</th><th>Descripción</th><th class="text-end">Valor</th><th class="text-end">Saldo resultante</th></tr></thead>
+            <tbody id="tbMov"></tbody>
+          </table>
+        </div></div></div>
+        <p class="text-muted small mt-2">Se muestran los 300 movimientos más recientes.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: nuevo cliente -->
+  <div class="modal fade" id="modalNuevo" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content">
+      <form id="formNuevo" novalidate>
+        <div class="modal-header"><h2 class="modal-title h5">Nuevo cliente</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
+        <div class="modal-body">
+          <div id="alertaNuevo" class="alert d-none" role="alert"></div>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label" for="nuDocumento">Documento</label><input class="form-control" id="nuDocumento" inputmode="numeric" maxlength="20" required></div>
+            <div class="col-md-6"><label class="form-label" for="nuEmail">Correo electrónico</label><input type="email" class="form-control" id="nuEmail" maxlength="120" required></div>
+            <div class="col-md-6"><label class="form-label" for="nuNombres">Nombres</label><input class="form-control" id="nuNombres" maxlength="80" required></div>
+            <div class="col-md-6"><label class="form-label" for="nuApellidos">Apellidos</label><input class="form-control" id="nuApellidos" maxlength="80" required></div>
+            <div class="col-md-6"><label class="form-label" for="nuTelefono">Teléfono</label><input class="form-control" id="nuTelefono" maxlength="20"></div>
+            <div class="col-md-6"><label class="form-label" for="nuDireccion">Dirección</label><input class="form-control" id="nuDireccion" maxlength="150"></div>
+            <div class="col-md-6"><label class="form-label" for="nuPassword">Contraseña inicial</label><input type="password" class="form-control" id="nuPassword" autocomplete="new-password" required><div class="form-text">Mínimo 8 caracteres, con letras y números.</div></div>
+            <div class="col-md-6"><label class="form-label" for="nuPin">PIN del cajero (4 dígitos)</label><input type="password" inputmode="numeric" class="form-control" id="nuPin" maxlength="4" autocomplete="new-password" required></div>
+            <div class="col-md-6"><label class="form-label" for="nuTipo">Tipo de cuenta</label><select class="form-select" id="nuTipo"><option value="AHORROS">Ahorros</option><option value="CORRIENTE">Corriente</option></select></div>
+            <div class="col-md-6"><label class="form-label" for="nuSaldo">Saldo inicial (opcional)</label><input type="number" class="form-control" id="nuSaldo" min="0" step="0.01" value="0"></div>
+          </div>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-primary">Crear cliente</button></div>
+      </form>
+    </div></div>
+  </div>
+
+  <!-- MODAL: detalle de cliente -->
+  <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title h5">Detalle del cliente</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
+      <div class="modal-body" id="detBody"></div>
+      <div class="modal-footer" id="detPie"></div>
+    </div></div>
+  </div>
+
+  <!-- MODAL: editar cliente -->
+  <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog"><div class="modal-content">
+      <form id="formEditar" novalidate>
+        <div class="modal-header"><h2 class="modal-title h5">Editar cliente</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
+        <div class="modal-body">
+          <div id="alertaEditar" class="alert d-none" role="alert"></div>
+          <input type="hidden" id="edId">
+          <div class="mb-3"><label class="form-label" for="edDocumento">Documento</label><input class="form-control" id="edDocumento" readonly></div>
+          <div class="mb-3"><label class="form-label" for="edNombres">Nombres</label><input class="form-control" id="edNombres" maxlength="80" required></div>
+          <div class="mb-3"><label class="form-label" for="edApellidos">Apellidos</label><input class="form-control" id="edApellidos" maxlength="80" required></div>
+          <div class="mb-3"><label class="form-label" for="edEmail">Correo electrónico</label><input type="email" class="form-control" id="edEmail" maxlength="120" required></div>
+          <div class="mb-3"><label class="form-label" for="edTelefono">Teléfono</label><input class="form-control" id="edTelefono" maxlength="20"></div>
+          <div class="mb-3"><label class="form-label" for="edDireccion">Dirección</label><input class="form-control" id="edDireccion" maxlength="150"></div>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button><button type="submit" class="btn btn-primary">Guardar</button></div>
+      </form>
+    </div></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/util.js"></script>
+  <script src="/js/sesion.js" data-rol="ADMIN"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
