@@ -13,7 +13,7 @@ Todos los usuarios ingresan por `/html/login.html`; el sistema los lleva a su m√
 
 ## Integrantes
 - _[Leonardo Montes]_
-- _[------------------------]_
+- _[Santiago Salcedo Rondon]_
 - _[-----------------------]_
 
 ## Tecnolog√≠as utilizadas
