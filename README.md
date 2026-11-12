@@ -13,8 +13,8 @@ Todos los usuarios ingresan por `/html/login.html`; el sistema los lleva a su m√
 
 ## Integrantes
 - _[Leonardo Montes]_
-- _[Santiago Salcedo]_
-- _[Maicol Rivera]_
+- _[------------------------]_
+- _[-----------------------]_
 
 ## Tecnolog√≠as utilizadas
 - **Backend:** Node.js + Express.js
